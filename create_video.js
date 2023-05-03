@@ -42,6 +42,11 @@ const video_manipulated_path = "outputs/video_manipulated.mp4";
     video_texts[Math.floor(Math.random() * video_texts.length)];
   addTextToVideo(video_text[0], video_text[1], `outputs/final_video.mp4`);
 
+  // change aspect ratio
+  execSync(
+    `ffmpeg -i outputs/final_video.mp4 -c copy -aspect 9/16 outputs/out.mp4`
+  );
+
   // update videos.json
   const new_videos = videos.map((v) => {
     if (v.link === video_url) {
@@ -58,7 +63,7 @@ const video_manipulated_path = "outputs/video_manipulated.mp4";
       " "
     )} \n${new Date().toISOString()} \n${instagram_tags.join(" ")}`,
   };
-  await fs.writeFile("data/video_data.json", JSON.stringify(video_data));
+  await fs.writeFile("outputs/video_data.json", JSON.stringify(video_data));
 })();
 
 function addTextToVideo(text1, text2, save_path) {

@@ -66,7 +66,7 @@ while t + t_increment <  video_clip.duration:
 final_video_clip = concatenate_videoclips(video_clips)
 
 final_clip = final_video_clip.set_audio(audio_clip)
-final_clip.set_duration(final_video_clip.duration)
+# final_clip.set_duration(audio_clip.duration)
 output_path = sys.argv[1]
 
 final_clip.write_videofile(output_path, fps=video_clip.fps)

@@ -10,3 +10,4 @@ const fs = require("fs/promises");
     .flat();
   await fs.writeFile("out.json", JSON.stringify({ tags: output }));
 })();
+// https://inflact.com/tools/instagram-hashtag-generator/#/search/
