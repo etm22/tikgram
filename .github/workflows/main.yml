@@ -47,4 +47,4 @@ jobs:
       - uses: FedericoCarboni/setup-ffmpeg@v2
       - run: git pull origin master
       - run: npm install
-      - run: node upload_instagram.js
+      - run: node upload_instagram.js ${{matrix.accounts}}
