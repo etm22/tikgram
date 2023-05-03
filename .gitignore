@@ -1,0 +1,9 @@
+node_modules
+outputs/*/*.mp4
+outputs/*.mp4
+outputs/*.json
+outputs/*.jpg
+outputs/*.png
+.env
+outputs_crypto
+cookies.json
