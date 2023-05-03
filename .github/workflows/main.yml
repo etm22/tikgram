@@ -1,59 +1,59 @@
-name: Create videos instagram
+name: Create videos
 
 on:
-  push:
-    branches: master
+  # push:
+  #   branches: master
   schedule:
     - cron: "0 */8 * * *" # every 8 hours
 env:
   COOKIES_API_URL: ${{secrets.COOKIES_API_URL}}
 
 jobs:
-  # create-video:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: FedericoCarboni/setup-ffmpeg@v2
-  #     - run: npm install
-  #     - run: pip install moviepy
-  #     - run: node create_video.js
-  #     # - uses: nick-fields/retry@v2
-  #     #   with:
-  #     #     timeout_minutes: 5
-  #     #     max_attempts: 3
-  #     #     retry_on: error
-  #     #     command: node create_video.js
-  #     - run: node stats.js
-  #     - run: |-
-  #         git config user.name "Automated"
-  #         git config user.email "actions@users.noreply.github.com"
-  #         git add -A
-  #         timestamp=$(date -u)
-  #         git commit -m "Latest data: ${timestamp}" || exit 0
-  #         git push
-  #     - uses: actions/upload-artifact@v3
-  #       with:
-  #         name: outputs
-  #         path: outputs
-  #         retention-days: 1
+  create-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: FedericoCarboni/setup-ffmpeg@v2
+      - run: npm install
+      - run: pip install moviepy
+      # - run: node create_video.js
+      - uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          retry_on: error
+          command: node create_video.js
+      - run: node stats.js
+      - run: |-
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          timestamp=$(date -u)
+          git commit -m "Latest data: ${timestamp}" || exit 0
+          git push
+      - uses: actions/upload-artifact@v3
+        with:
+          name: outputs
+          path: outputs
+          retention-days: 1
 
-  # upload-instagram:
-  #   needs: create-video
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       accounts: [financeasy108c]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/download-artifact@v3
-  #     - uses: FedericoCarboni/setup-ffmpeg@v2
-  #     - run: git pull origin master
-  #     - run: npm install
-  #     - run: node upload_instagram.js ${{matrix.accounts}}
+  upload-ig:
+    needs: create-video
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        accounts: [financeasy108c]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+      - uses: FedericoCarboni/setup-ffmpeg@v2
+      - run: git pull origin master
+      - run: npm install
+      - run: node upload_instagram.js ${{matrix.accounts}}
 
   delete-artifacts:
     runs-on: ubuntu-latest
-    # needs: upload-instagram
+    needs: upload-ig
     steps:
       - uses: kolpav/purge-artifacts-action@v1
         with:
