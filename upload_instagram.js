@@ -2,6 +2,9 @@ const extractFrames = require("ffmpeg-extract-frames");
 const InstagramPublisher = require("instagram-publisher");
 const fs = require("fs/promises");
 const axios = require("axios");
+const {
+  generateInstagramTagsChatgpt,
+} = require("./services/get_instagram_tags");
 require("dotenv").config();
 
 (async () => {
@@ -24,10 +27,17 @@ require("dotenv").config();
 
   const video_data = JSON.parse(await fs.readFile("outputs/video_data.json"));
 
+  // create video data
+  const instagram_tags = generateInstagramTagsChatgpt();
   const reel_data = {
     video_path,
     thumbnail_path,
-    caption: video_data.instagram_caption,
+    caption:
+      video_data.instagram_caption +
+      "\n" +
+      new Date().toISOString() +
+      "\n" +
+      instagram_tags.join(" "),
   };
 
   const client = new InstagramPublisher({

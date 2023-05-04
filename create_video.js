@@ -1,9 +1,6 @@
 const downloadTiktokVideo = require("./services/download_tiktok_video");
 const { execSync } = require("child_process");
 const fs = require("fs/promises");
-const {
-  generateInstagramTagsChatgpt,
-} = require("./services/get_instagram_tags");
 const { shuffleArray } = require("./services/utils");
 
 const video_path = "outputs/video.mp4";
@@ -56,12 +53,8 @@ const video_manipulated_path = "outputs/video_manipulated.mp4";
   });
   await fs.writeFile("data/videos.json", JSON.stringify(new_videos));
 
-  // create video data
-  const instagram_tags = generateInstagramTagsChatgpt();
   const video_data = {
-    instagram_caption: `${video_text.join(
-      " "
-    )} \n${new Date().toISOString()} \n${instagram_tags.join(" ")}`,
+    instagram_caption: `${video_text.join(" ")}`,
   };
   await fs.writeFile("outputs/video_data.json", JSON.stringify(video_data));
 })();
